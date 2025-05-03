@@ -1,5 +1,5 @@
 # mac
-Mini Arithmatic Calculator/Compiler
+Mini Arithmetic Calculator/Compiler
 
 MAC is a small educational project inspired by an example in *Modern Compiler Design* by Dick 
 Grune et al.  
