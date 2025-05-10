@@ -4,7 +4,7 @@
  * Lexical analyzer
  */
 
-#inlcude "lex.h"
+#include "lex.h"
 
 /*Helper function that tells if the character a layout character(white space)? */
 static int layoutChar (int ch){
@@ -28,11 +28,11 @@ void getNextToken(void){
   do{
     ch = getchar();
     if (ch < 0){
-      Token.class = EOF 
+      Token.class = EOF; 
       Token.repr = '#';
       return;
     }
-  }while(layoutChar(ch))
+  }while(layoutChar(ch));
 
   /*Now classify it*/
   if('0' <= ch && ch <= '9'){

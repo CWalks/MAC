@@ -17,7 +17,7 @@
 typedef struct{
   int class;
   char repr;
-}Token_type
+}Token_type;
 
 extern Token_type Token;
 extern void get_next_token(void);
