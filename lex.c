@@ -19,7 +19,7 @@ static int layoutChar (int ch){
 Token_type Token;
 
 /* 
- * Gets the next token (non-layout character) and classifies in
+ * Gets the next token (non-layout character) and classifies i:examplen
  */
 void getNextToken(void){
     int ch;

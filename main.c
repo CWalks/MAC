@@ -7,5 +7,9 @@
 #include "lex.h"
 
 int main(int argc, char *argv[]){
+  
+  getNextToken();
+
+  printf("%c \n", Token.repr);
   return 0;
 }

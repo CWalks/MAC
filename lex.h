@@ -20,6 +20,6 @@ typedef struct{
 }Token_type;
 
 extern Token_type Token;
-extern void get_next_token(void);
+extern void getNextToken(void);
 
 #endif /*__lex_h__*/
