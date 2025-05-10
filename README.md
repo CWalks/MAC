@@ -1,12 +1,12 @@
 # mac
-Mini Arithmatic Calculator/Compiler
+Mini Arithmetic Calculator/Compiler
 
 MAC is a small educational project inspired by an example in *Modern Compiler Design* by Dick 
 Grune et al.  
 It serves as both an **interpreter** and a **demo compiler** for algebraic expressions.
 
 ## Features
-- Parses and evaluates arithmetic expressions (example: `3 * (4 + 5)`)
+- Parses and evaluates fully bracketed expresions(example: `3 * (4 + 5)`)
 - Builds an abstract syntax tree (AST)
 - Supports code generation and interpretation 
 
