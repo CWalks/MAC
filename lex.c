@@ -6,10 +6,16 @@
 
 #include "lex.h"
 
+int curLine = 1;
+int curChar = 1;
+
 /*Helper function that tells if the character a layout character(white space)? */
 static int layoutChar (int ch){
   switch (ch){
-    case ' ': case '\t': case '\n': return 1;
+    case '\n':
+      curLine++;
+    curChar = 0;
+    case ' ': case '\t': return 1;
     default: return 0;
   }
 }
@@ -33,8 +39,9 @@ void getNextToken(void){
       return;
     }
   }while(layoutChar(ch));
-
+  
   /*Now classify it*/
+  curChar++;
   if('0' <= ch && ch <= '9'){
     Token.class = DIGIT;
   }else{Token.class = ch;}

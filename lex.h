@@ -20,6 +20,8 @@ typedef struct{
 }Token_type;
 
 extern Token_type Token;
+extern int curLine;
+extern int curChar;
 extern void getNextToken(void);
 
 #endif /*__lex_h__*/
