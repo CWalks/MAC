@@ -14,7 +14,7 @@ static int layoutChar (int ch){
   switch (ch){
     case '\n':
       curLine++;
-    curChar = 0;
+      curChar = 1;
     case ' ': case '\t': return 1;
     default: return 0;
   }
@@ -40,12 +40,22 @@ void getNextToken(void){
     }
   }while(layoutChar(ch));
   
-  /*Now classify it*/
   curChar++;
+  /*Now classify it*/
   if('0' <= ch && ch <= '9'){
     Token.class = DIGIT;
   }else{Token.class = ch;}
 
   Token.repr = ch;
 
+}
+
+/*Returns the current line number*/
+int getCurLine(void){
+  return curLine;
+}
+
+/*Returns the current character number*/
+int getCurChar(void){
+  return curChar;
 }
