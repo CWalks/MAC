@@ -5,13 +5,16 @@
  */
   
 #include "lex.h"
+#include "error.h"
+#include "parser.h"
 
 int main(int argc, char *argv[]){
  
-  do {
-  getNextToken();
-  printf("%c \n%i \n", Token.repr, Token.class);
-  }while(Token.class != 256);
 
+  ASTNode *icode;
+  if(!parseProgram(&icode)){
+    error("No top-level expression");
+  }
+  printf("%c\n",icode->type);
   return 0;
 }

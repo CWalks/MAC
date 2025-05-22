@@ -7,6 +7,6 @@
 #include "error.h"
 
 void error(char *msg){
-  fprintf(stderr, "%s on line %i at charater %i\n", msg, curLine, curChar);
+  fprintf(stderr, "ERROR: %s on line %i at charater %i\n", msg, curLine, curChar);
   exit(1);
 }
