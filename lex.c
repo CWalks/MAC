@@ -7,7 +7,7 @@
 #include "lex.h"
 
 int curLine = 1;
-int curChar = 1;
+int curChar = 0;
 
 /*Helper function that tells if the character a layout character(white space)? */
 static int layoutChar (int ch){

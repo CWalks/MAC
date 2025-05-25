@@ -11,7 +11,8 @@ CFLAGS = -Wall -Wextra -std=c99 -pedantic
 .PHONY: all clean
 
 #Source and object files
-OBJS = main.o lex.o 
+OBJS = main.o lex.o error.o parser.o 
+
 
 #Target 
 TARGET = mac 
@@ -22,8 +23,16 @@ all: $(TARGET)
 lex.o: lex.c lex.h 
 	$(CC) $(CFLAGS) -c lex.c
 
-main.o: main.c lex.h 
+parser.o: parser.c error.h parser.h  
+	$(CC) $(CFLAGS) -c parser.c
+
+error.o: error.c lex.h error.h 
+	$(CC) $(CFLAGS) -c error.c	
+
+main.o: main.c lex.h error.h parser.h  
 	$(CC) $(CFLAGS) -c main.c 
+
+
 
 #linking
 $(TARGET): $(OBJS)

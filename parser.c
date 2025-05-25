@@ -15,8 +15,9 @@ static Expression *newExpression(void){
 /*Free the expression*/
 static void freeExpression(Expression *expr){free((void *)expr);}
 
-/*If the current token is an operator ('+' or '-')
- * retrun 1 for success
+/* Checks if oper is an operator ('+' or '*')
+ * Return 1 if the oper is classifid as a operator, otherwise
+ * return 0
  */
 static int parseOperator(Operator *oper){
   if(Token.class == '+'){
@@ -29,22 +30,35 @@ static int parseOperator(Operator *oper){
     getNextToken();
     return 1;
   }
-  return 0; /*Failed to get operatior*/
+  return 0; /*Failed to get operator*/
 }
 
+/* Builds an AST from a given Expression 
+ * Return 1 if successful otherwise return
+ * 0 for failuer
+ *
+ * If an error is found it will stop the program and broadcast
+ * an error message
+ */
 static int parseExpresion(Expression **expr_p){
 
   *expr_p = newExpression();
   Expression *expr = *expr_p;
 
-  /*Try to parse a digit*/
+  /* Try to parse a digit
+   * If the current token is a digit, it's a leaf node. 
+   * Sets the type, stores the value, and returns success
+   */
   if(Token.class == DIGIT){
     expr->type = 'D';
     expr->value = Token.repr - '0';
     getNextToken();
     return 1;
   }
-/*Try to parse a parenthesized expression*/
+/* Try to parse a parenthesized expression
+ * we expect an expression, an operator, 
+ * and another expression.
+ */
   if(Token.class == '('){
     expr->type = 'p';
     getNextToken();
@@ -88,5 +102,3 @@ int parseProgram(ASTNode **icode_p){
 return 0;
 }
 
-/*Add in error and test.
- * test curChar and curLine*/

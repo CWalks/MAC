@@ -23,5 +23,7 @@ extern Token_type Token;
 extern int curLine;
 extern int curChar;
 extern void getNextToken(void);
+extern int getCurLine(void);
+extern int getCurChar(void);
 
 #endif /*__lex_h__*/
