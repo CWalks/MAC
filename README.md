@@ -14,6 +14,7 @@ Dick Grune et al. It serves as both an **interpreter** and a **demo compiler** f
 - Look at both interpretation and code generation
 - Work with parsing and AST
 
+For more information on how to use MAC read SYNTAX.md
 
 This is the book that inspired me to make This
 https://www.dickgrune.com/Books/MCD_1st_Edition/
