@@ -30,6 +30,7 @@ A operator will be either '+' or '*'
 ## Grammar
 When using brackets it must follow
 expression → DIGIT | '(' expression operator expression ')'
+
 operator   → '+' | '*' 
 
 Whitespace ignored 
