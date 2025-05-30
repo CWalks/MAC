@@ -6,31 +6,40 @@
 
 #include "lex.h"
 
+/* Global variables that will help with error handling */
 int curLine = 1;
 int curChar = 0;
 
-/*Helper function that tells if the character a layout character(white space)? */
+/* Global variable that will hold the current token that the lexical 
+ * analyzer is focusing on 
+ */
+TokenType Token;
+
+/**
+ * @breif Helper function that tells if the character (ch) a layout character(white space)
+ * @param ch: ch is a character repersenting as an int
+ * @return: 1 if ch is whitespace otherwise return 0
+ * */
 static int layoutChar (int ch){
   switch (ch){
     case '\n':
-      curLine++;
-      curChar = 1;
-    case ' ': case '\t': return 1;
+      curLine++; /* Incerment curLine & reset curChar */
+      curChar = 0;
+      return 1;
+    case ' ': case '\t': return 1; /* ch is whitespace */
     default: return 0;
   }
 }
 
-/*The example in the book uses this as a gobal variable
- * so I will follow that for now but I can change it later*/
-Token_type Token;
-
-/* 
- * Gets the next token (non-layout character) and classifies i:examplen
+/**
+ * @breif Gets the next token (non-layout character) and classifies it
+ * @note No peramiter or returns but this functions calls getchar()
+ * and expects the input to be something for it to analyze 
  */
 void getNextToken(void){
     int ch;
   
-  /*get a non-layout character*/
+  /*Get next non-layout character*/
   do{
     ch = getchar();
     if (ch < 0){
@@ -40,7 +49,9 @@ void getNextToken(void){
     }
   }while(layoutChar(ch));
   
+  /* Update curChar */
   curChar++;
+
   /*Now classify it*/
   if('0' <= ch && ch <= '9'){
     Token.class = DIGIT;

@@ -7,41 +7,56 @@
 #include "parser.h"
 #include "error.h"
 
-/*Creating and returning a new dynamically allocated Expression*/
+#define SUCCESS 1
+#define FAILURE 0
+
+
+/**
+ * @brief Creating and returning a new dynamically allocated Expression
+ * @Return: a new Expression strut
+ */
 static Expression *newExpression(void){
-  return (Expression *)malloc(sizeof(Expression));
+  Expression* newExp = (Expression *) malloc(sizeof(Expression));
+  if (newExp == NULL){
+    error("Failed to create new expression; Not enough memory");
+  }
+  return newExp;
 }
 
-/*Free the expression*/
+/**
+ * @brief Free expression
+ */
 static void freeExpression(Expression *expr){free((void *)expr);}
 
-/* Checks if oper is an operator ('+' or '*')
- * Return 1 if the oper is classifid as a operator, otherwise
- * return 0
+/**
+ * @brief Checks if oper is an operator ('+' or '*')
+ * @Return: 1 if the oper is classifid as a operator, otherwise return 0
  */
 static int parseOperator(Operator *oper){
   if(Token.class == '+'){
     *oper = '+';
     getNextToken();
-    return 1; 
+    return SUCCESS; 
   }
   if(Token.class == '*'){
     *oper = '*';
     getNextToken();
-    return 1;
+    return SUCCESS;
   }
-  return 0; /*Failed to get operator*/
+  return FAILURE; /*Failed to get operator*/
 }
 
-/* Builds an AST from a given Expression 
- * Return 1 if successful otherwise return
- * 0 for failuer
+/**
+ * @brief Builds an AST from a given Expression
+ * @param expr_P: a double pointer to a expression that will start as the root of the AST
+ * @Return: 1 if successful otherwise return 0 
  *
- * If an error is found it will stop the program and broadcast
+ * @note If an error is found it will stop the program and broadcast
  * an error message
  */
-static int parseExpresion(Expression **expr_p){
+static int parseExpression(Expression **expr_p){
 
+  /* Just for convenience */
   *expr_p = newExpression();
   Expression *expr = *expr_p;
 
@@ -53,7 +68,7 @@ static int parseExpresion(Expression **expr_p){
     expr->type = 'D';
     expr->value = Token.repr - '0';
     getNextToken();
-    return 1;
+    return SUCCESS;
   }
 /* Try to parse a parenthesized expression
  * we expect an expression, an operator, 
@@ -62,43 +77,55 @@ static int parseExpresion(Expression **expr_p){
   if(Token.class == '('){
     expr->type = 'p';
     getNextToken();
-    if(!parseExpresion(&expr->left)){
+    if(!parseExpression(&expr->left)){
       /*error missing expression*/
-      error("Missing expression");
+      error("Missing expression; When using bracket you must follow the grammer (expression operator expression) ");
     }
     if(!parseOperator(&expr->oper)){
       /*error missing operator*/
-      error("Missing operator");
+      error("Missing operator; When using bracket you must follow the grammer (expression operator expression) ");
     }
-    if(!parseExpresion(&expr->right)){
+    if(!parseExpression(&expr->right)){
       /*Error missing expression*/
-      error("Missing expression");
+      error("Missing expression; When using bracket you must follow the grammer (expression operator expression) ");
     }
     if(Token.class != ')'){
       /*error missing bracket )*/
-      error("Missing end bracket");
+      error("Missing end bracket; remember to match your brackets! ");
     }
     getNextToken();
-    return 1;
+    return SUCCESS;
 
   }
   /*Failed on both attemps*/
   freeExpression(expr);
-  return 0;
+  return FAILURE;
 }
 
+/**
+ * @brief Parses the input and builds the abstract syntax tree (AST).
+ * Acts as the starting point for the lexical analyzer. If parsing is successful, 
+ * the resulting expression tree is stored in the location pointed to by icode_p.
+ *
+ * @param icode_P A double pointer ASTNode* where the resulting AST will be stored.
+ * This will be the root of the tree
+ *
+ * @return int return 1 if successful otherwise 0 for failure
+ * */
 int parseProgram(ASTNode **icode_p){
   Expression *expr;
 
   /*Start the lexical analyzer*/
   getNextToken();
-  if(parseExpresion(&expr)){
+  if(parseExpression(&expr)){
+    /*After parsing, if there isnt an EOF at the end, the program does not end with ')'*/
     if(Token.class != EOF){
       error("Garbage after end of program");
     }
+    /* Assign the AST to icode_P (by letting icode_p equal the root of the AST)*/
     *icode_p = expr;
-    return 1;
+    return SUCCESS;
   }
-return 0;
+return FAILURE;
 }
 
