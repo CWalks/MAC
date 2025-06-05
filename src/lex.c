@@ -65,7 +65,7 @@ void getNextToken(void){
   if(isDigit(ch)){
     int value = 0;
     while(isDigit(ch)){
-      value = (value * 10) + (ch - '0'); /*This builds the number*/
+      value = (value * 10) + (ch - '0'); /*This builds the number allowing multi digit numbers*/
       ch = getchar();
     }
     ungetc(ch, stdin);  /*put the non-digit back for future processing*/
