@@ -17,7 +17,7 @@ typedef struct _expression{
   char type; /*To tell if it is a digit or parenthesized expression ('D' or 'p')*/
 } Expression;
 
-typedef Expression ASTNode;
-extern int parseProgram(ASTNode **);
+typedef Expression AST_node;
+extern int parseProgram(AST_node **);
 
 #endif /*__parser_h__*/

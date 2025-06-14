@@ -23,7 +23,7 @@ all : mac
 .PHONY: all clean
 
 #object files that will be made
-OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/lex.o $(BUILD_DIR)/error.o $(BUILD_DIR)/parser.o 
+OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/lex.o $(BUILD_DIR)/error.o $(BUILD_DIR)/parser.o $(BUILD_DIR)/stackBackend.o 
 
 clean:
 	rm -fr mac $(BUILD_DIR) $(LIB_DIR) $(BIN_DIR)
@@ -37,10 +37,15 @@ $(LIB_DIR) :
 $(BIN_DIR) :
 	mkdir -p $(BIN_DIR)
  
-# Compile frontend .c to .o
+#Compile frontend .c to .o
 $(BUILD_DIR)/%.o: $(FEND_DIR)/%.c | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
+#Compile backend .c to .o 
+$(BUILD_DIR)/%.o: $(BEND_DIR)/%.c | $(BUILD_DIR)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+#compile main 
 $(BUILD_DIR)/main.o: src/main.c | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 

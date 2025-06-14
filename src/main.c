@@ -4,9 +4,12 @@
  * Main 
  */
   
+/*Get ride of this with printTree*/
 #include "lex.h"
+
 #include "error.h"
 #include "parser.h"
+#include "backend.h"
 
 
 void printTree(Expression *expr, int depth) {
@@ -26,12 +29,12 @@ void printTree(Expression *expr, int depth) {
 int main(int argc, char *argv[]){
  
 
-  ASTNode *icode;
+  AST_node *icode;
   if(!parseProgram(&icode)){
     error("No top-level expression");
   }
  
-  printTree(icode, 0);
+  stackMachineCodeGen(icode);
 
   return 0;
 }
