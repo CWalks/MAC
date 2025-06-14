@@ -22,7 +22,8 @@ This language supports:
 ## Token
 
 #### Digits 
-A digit will be from '0' to '9'
+A digit will be made up of number from '0' to '9'
+exmaple: 5, 52, 042
 
 #### Operators
 A operator will be either '+' or '*'
@@ -33,6 +34,19 @@ expression → DIGIT | '(' expression operator expression ')'
 operator   → '+' | '*' 
 
 Whitespace ignored 
+
+## Stack Machine Generation
+This code generation will output code for an abstract stack machine.
+
+### How does the stack machine work?
+It will push numbers onto the abstract stack.
+When it does an operation (ADD or MULT) it takes the 
+top two number then preforms the operation on them. That 
+new number takes the spot of the first of the 2 numbers taken.
+
+Right now this is just abstract but maybe as a future project someone can
+make a VM that would actually run this ;)
+
 
 
 
