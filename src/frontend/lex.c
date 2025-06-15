@@ -5,6 +5,7 @@
  */
 
 #include "lex.h"
+#include "error.h"
 
 /* Global variables that will help with error handling */
 int curLine = 1;
@@ -37,6 +38,7 @@ static int layoutChar (int ch){
  * @return: 1 if ch is a digit otherwise 0
  */
 static int isDigit (int ch){
+  if(ch == '.'){error("unsupported float");}
   return ('0' <= ch && ch <= '9');
 }
 

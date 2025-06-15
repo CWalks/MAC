@@ -5,12 +5,15 @@
  */
 
 #include "error.h"
+/*Needed for curChar & curLine*/
+#include "lex.h"  
 
 /**
-  * prints out a given message to standard error then exits the program
+  * @breif: prints out a given message to standard error then exits the program
+  * @param msg: A string that discribes the error
   * @warning this function will exit the program
   */
 void error(char *msg){
-  fprintf(stderr, "ERROR: %s on line %i at charater %i\n", msg, curLine, curChar);
+  fprintf(stderr, "ERROR: %s.\nFound on line %i at charater %i\n", msg, curLine, curChar);
   exit(1);
 }

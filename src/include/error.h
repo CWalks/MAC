@@ -8,9 +8,7 @@
 #define __error_h__
 
 #include <stdlib.h>
-
-/*Needed for curChar & curLine*/
-#include "lex.h"  
+#include <stdio.h>
 
 /* Prints out a given error message then exits the program */
 extern void error(char *msg);

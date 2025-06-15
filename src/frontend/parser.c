@@ -5,6 +5,7 @@
  */
 
 #include "parser.h"
+#include "lex.h"
 #include "error.h"
 
 #define SUCCESS 1
@@ -120,7 +121,20 @@ int parseProgram(AST_node **icode_p){
   if(parseExpression(&expr)){
     /*After parsing, if there isnt an EOF at the end, the program does not end with ')'*/
     if(Token.class != EOF){
-      error("Garbage after end of program");
+     
+      switch (Token.class) {
+        case '*':
+          error("Expressions must be wrapped in parentheses");
+          break; /*Not needed because error exits the program but this stops from compiler complaining*/
+        case '+':
+          error("Expressions must be wrapped in parentheses");
+        case DIGIT:
+          error("Space between digits");
+          break;
+    
+        default : error("Garbage after end of program");
+
+      }
     }
     /* Assign the AST to icode_P (by letting icode_p equal the root of the AST)*/
     *icode_p = expr;
