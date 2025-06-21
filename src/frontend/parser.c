@@ -33,15 +33,15 @@ static void freeExpression(Expression *expr){free((void *)expr);}
  * @brief Checks if oper is an operator ('+' or '*')
  * @Return: 1 if the oper is classifid as a operator, otherwise return 0
  */
-static int parseOperator(Operator *oper){
+static int parseOperator(Operator *oper, FILE *fp){
   if(Token.class == '+'){
     *oper = '+';
-    getNextToken();
+    getNextToken(fp);
     return SUCCESS; 
   }
   if(Token.class == '*'){
     *oper = '*';
-    getNextToken();
+    getNextToken(fp);
     return SUCCESS;
   }
   return FAILURE; /*Failed to get operator*/
@@ -55,7 +55,7 @@ static int parseOperator(Operator *oper){
  * @note If an error is found it will stop the program and broadcast
  * an error message
  */
-static int parseExpression(Expression **expr_p){
+static int parseExpression(Expression **expr_p, FILE *fp){
 
   /* Just for convenience */
   *expr_p = newExpression();
@@ -68,7 +68,7 @@ static int parseExpression(Expression **expr_p){
   if(Token.class == DIGIT){
     expr->type = 'D';
     expr->value = Token.repr;
-    getNextToken();
+    getNextToken(fp);
     return SUCCESS;
   }
 /* Try to parse a parenthesized expression
@@ -77,16 +77,16 @@ static int parseExpression(Expression **expr_p){
  */
   if(Token.class == '('){
     expr->type = 'P';
-    getNextToken();
-    if(!parseExpression(&expr->left)){
+    getNextToken(fp);
+    if(!parseExpression(&expr->left, fp)){
       /*error missing expression*/
       error("Missing expression; You are missing the left expression within your brackets");
     }
-    if(!parseOperator(&expr->oper)){
+    if(!parseOperator(&expr->oper, fp)){
       /*error missing operator*/
       error("Missing operator; You are missing an operator within your brackets");
     }
-    if(!parseExpression(&expr->right)){
+    if(!parseExpression(&expr->right, fp)){
       /*Error missing expression*/
       error("Missing expression; You are missing the right expression within your brackets");
     }
@@ -94,7 +94,7 @@ static int parseExpression(Expression **expr_p){
       /*error missing bracket )*/
       error("Missing end bracket; remember to match your brackets! ");
     }
-    getNextToken();
+    getNextToken(fp);
     return SUCCESS;
 
   }
@@ -110,15 +110,21 @@ static int parseExpression(Expression **expr_p){
  *
  * @param icode_P A double pointer AST_node* where the resulting AST will be stored.
  * This will be the root of the tree
- *
+ *   
  * @return int return 1 if successful otherwise 0 for failure
  * */
-int parseProgram(AST_node **icode_p){
+int parseProgram(AST_node **icode_p, FILE *fp){
+
+  /*Check fp*/
+  if (!fp) {
+        error("parse: NULL file pointer\n"); 
+    }
+
   Expression *expr;
 
   /*Start the lexical analyzer*/
-  getNextToken();
-  if(parseExpression(&expr)){
+  getNextToken(fp);
+  if(parseExpression(&expr, fp)){
     /*After parsing, if there isnt an EOF at the end, the program does not end with ')'*/
     if(Token.class != EOF){
      

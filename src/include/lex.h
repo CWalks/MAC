@@ -29,7 +29,7 @@ extern int getCurLine(void);
 extern int getCurChar(void);
 
 /* Grabs the next non-layout token */
-extern void getNextToken(void);
+extern void getNextToken(FILE *fp);
 
 /* */
 #endif /*__lex_h__*/

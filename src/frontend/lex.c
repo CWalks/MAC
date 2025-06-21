@@ -44,15 +44,24 @@ static int isDigit (int ch){
 
 /**
  * @breif Gets the next token (non-layout character) and classifies it
+ * 
+ * @param fp a FILE pointer that will be the file to read from
+ *
  * @note No peramiter or returns but this functions calls getchar()
  * and expects the input to be something for it to analyze 
  */
-void getNextToken(void){
+void getNextToken(FILE *fp){
+
+  /*Check fp*/
+  if (!fp) {
+        error("lex: NULL file pointer\n");
+    }
     int ch;
   
   /*Get next non-layout character*/
   do{
-    ch = getchar();
+    ch = fgetc(fp);
+
     if (ch < 0){
       Token.class = EOF; 
       Token.repr = '#';
@@ -68,9 +77,9 @@ void getNextToken(void){
     int value = 0;
     while(isDigit(ch)){
       value = (value * 10) + (ch - '0'); /*This builds the number allowing multi digit numbers*/
-      ch = getchar();
+      ch = fgetc(fp);
     }
-    ungetc(ch, stdin);  /*put the non-digit back for future processing*/
+    ungetc(ch, fp);  /*put the non-digit back for future processing*/
     Token.class = DIGIT;
     Token.repr = value;
   

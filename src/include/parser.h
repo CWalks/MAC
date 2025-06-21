@@ -8,6 +8,7 @@
 #define __parser_h__
 
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef int Operator;
 
@@ -20,6 +21,6 @@ typedef struct _expression{
 } Expression;
 
 typedef Expression AST_node;
-extern int parseProgram(AST_node **);
+extern int parseProgram(AST_node **, FILE *fp);
 
 #endif /*__parser_h__*/
