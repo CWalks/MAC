@@ -32,13 +32,14 @@ int main(int argc, char *argv[]){
  
   /* If there are too many flags */
   if(argc > 3){
-    fprintf(stderr, "Usage: %s <flag> <filename>\nFor fully list of flags read SYNTAX.md\n", argv[0]);
+    fprintf(stderr, "Usage: %s [-c | -s | -i]  <filename>\nFor fully list of flags read SYNTAX.md\n", argv[0]);
     return EXIT_FAILURE;
   }
   
   /*Flag parse*/
   int opt;
   int mode = 0; /*1 = C-gen, 2 = stakc-gen, 3 = interpreter*/
+  int numOfFlags = 0; /*keep track of how many vaild flags are passed*/
 
   static struct option longOptions[] = {
     {"C-gen", no_argument, 0, 'c' },
@@ -51,18 +52,27 @@ int main(int argc, char *argv[]){
       switch(opt){
         case 'c':
           mode = 1;
+          ++numOfFlags;
           break;
         case 's':
           mode = 2;
+          ++numOfFlags;
           break;
       case 'i':
           mode = 3;
+          ++numOfFlags;
           break;
       default: /*unknown flag*/
         return EXIT_FAILURE;
     }
   }
-   
+
+  /*Make sure only one vail flag is given*/
+  if(numOfFlags > 1){
+    fprintf(stderr, "Too many flags passed\nUsage: %s [-c | -s | -i]  <filename>\n", argv[0]);
+    return EXIT_FAILURE;
+  }  
+
   /* Open the file */
   FILE *fptr;
   fptr = fopen(argv[optind], "r");
