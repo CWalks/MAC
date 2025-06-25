@@ -11,6 +11,8 @@
 #include "parser.h"
 #include "backend.h"
 
+#include <getopt.h>
+
 
 void printTree(Expression *expr, int depth) {
   if (!expr) return;
@@ -27,21 +29,66 @@ void printTree(Expression *expr, int depth) {
 }
 
 int main(int argc, char *argv[]){
+ 
+  /* If there are too many flags */
+  if(argc > 3){
+    fprintf(stderr, "Usage: %s <flag> <filename>\nFor fully list of flags read SYNTAX.md\n", argv[0]);
+    return EXIT_FAILURE;
+  }
+  
+  /*Flag parse*/
+  int opt;
+  int mode = 0; /*1 = C-gen, 2 = stakc-gen, 3 = interpreter*/
 
+  static struct option longOptions[] = {
+    {"C-gen", no_argument, 0, 'c' },
+    {"stack-gen", no_argument, 0, 's'},
+    {"interpreter", no_argument, 0, 'i'},
+    {0, 0, 0, 0}
+    };
+
+    while ((opt = getopt_long (argc, argv, "csi", longOptions, NULL)) != -1){
+      switch(opt){
+        case 'c':
+          mode = 1;
+          break;
+        case 's':
+          mode = 2;
+          break;
+      case 'i':
+          mode = 3;
+          break;
+      default: /*unknown flag*/
+        return EXIT_FAILURE;
+    }
+  }
+   
+  /* Open the file */
   FILE *fptr;
-  fptr = fopen("/home/fuzzy/projects/mac/test/test1.txt", "r");
+  fptr = fopen(argv[optind], "r");
   if (!fptr) {
-    perror("Failed to open File\n");
-    return 1;
+    perror("Failed to open File");
+    
+    return EXIT_FAILURE; ;
   }
 
-  
+  /*Make the AST*/
   AST_node *icode;
   if(!parseProgram(&icode, fptr)){
-    error("No top-level expression");
+    fprintf(stderr, "Error: No valid expression found at the start of your input.\n");
+    fclose(fptr);
+    return EXIT_FAILURE;
   }
   fclose(fptr);
-  stackMachineCodeGen(icode);
+
+  /*Code gen*/
+  if(mode == 1){
+    printf("Code gen\n");
+  }else if(mode == 2){
+    stackMachineCodeGen(icode);
+  }else{
+    printf("interpreter\n");
+  }
 
   return 0;
 }

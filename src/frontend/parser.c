@@ -110,7 +110,9 @@ static int parseExpression(Expression **expr_p, FILE *fp){
  *
  * @param icode_P A double pointer AST_node* where the resulting AST will be stored.
  * This will be the root of the tree
- *   
+ *
+ * @param fp a FILE pointer that will be the file to read from
+ *
  * @return int return 1 if successful otherwise 0 for failure
  * */
 int parseProgram(AST_node **icode_p, FILE *fp){
