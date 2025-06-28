@@ -4,9 +4,6 @@
  * Main 
  */
   
-/*Get ride of this with printTree*/
-#include "lex.h"
-
 #include "error.h"
 #include "parser.h"
 #include "backend.h"
@@ -14,25 +11,12 @@
 #include <getopt.h>
 
 
-void printTree(Expression *expr, int depth) {
-  if (!expr) return;
-
-  for (int i = 0; i < depth; i++) printf("  "); // Indent
-
-  if (expr->type == 'D') {
-    printf("Digit: %d\n", expr->value);
-  } else if (expr->type == 'p') {
-    printf("Operator: %c\n", expr->oper);
-    printTree(expr->left, depth + 1);
-    printTree(expr->right, depth + 1);
-  }
-}
 
 int main(int argc, char *argv[]){
  
   /* If there are too many flags */
-  if(argc > 3){
-    fprintf(stderr, "Usage: %s [-c | -s | -i]  <filename>\nFor fully list of flags read SYNTAX.md\n", argv[0]);
+  if(argc > 3 || argc < 2){
+    fprintf(stderr, "Usage: %s [-c | -s | -i]  <filename>\n", argv[0]);
     return EXIT_FAILURE;
   }
   
@@ -77,7 +61,7 @@ int main(int argc, char *argv[]){
   FILE *fptr;
   fptr = fopen(argv[optind], "r");
   if (!fptr) {
-    perror("Failed to open File");
+    perror("./mac: Failed to open File");
     
     return EXIT_FAILURE; ;
   }
