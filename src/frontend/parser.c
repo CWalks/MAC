@@ -19,7 +19,7 @@
 static Expression *newExpression(void){
   Expression* newExp = (Expression *) malloc(sizeof(Expression));
   if (newExp == NULL){
-    error("Failed to create new expression; Not enough memory");
+    parseError("Failed to create new expression; Not enough memory");
   }
   return newExp;
 }
@@ -80,19 +80,19 @@ static int parseExpression(Expression **expr_p, FILE *fp){
     getNextToken(fp);
     if(!parseExpression(&expr->left, fp)){
       /*error missing expression*/
-      error("Missing expression; You are missing the left expression within your brackets");
+      parseError("Missing expression; You are missing the left expression within your brackets");
     }
     if(!parseOperator(&expr->oper, fp)){
       /*error missing operator*/
-      error("Missing operator; You are missing an operator within your brackets");
+      parseError("Missing operator; You are missing an operator within your brackets");
     }
     if(!parseExpression(&expr->right, fp)){
       /*Error missing expression*/
-      error("Missing expression; You are missing the right expression within your brackets");
+      parseError("Missing expression; You are missing the right expression within your brackets");
     }
     if(Token.class != ')'){
       /*error missing bracket )*/
-      error("Missing end bracket; remember to match your brackets! ");
+      parseError("Missing end bracket; remember to match your brackets! ");
     }
     getNextToken(fp);
     return SUCCESS;
@@ -119,7 +119,7 @@ int parseProgram(AST_node **icode_p, FILE *fp){
 
   /*Check fp*/
   if (!fp) {
-        error("parse: NULL file pointer\n"); 
+        parseError("parse: NULL file pointer\n"); 
     }
 
   Expression *expr;
@@ -132,15 +132,15 @@ int parseProgram(AST_node **icode_p, FILE *fp){
      
       switch (Token.class) {
         case '*':
-          error("Expressions must be wrapped in parentheses");
+          parseError("Expressions must be wrapped in parentheses");
           break; /*Not needed because error exits the program but this stops from compiler complaining*/
         case '+':
-          error("Expressions must be wrapped in parentheses");
+          parseError("Expressions must be wrapped in parentheses");
         case DIGIT:
-          error("Space between digits");
+          parseError("Space between digits");
           break;
     
-        default : error("Garbage after end of program");
+        default : parseError("Garbage after end of program");
 
       }
     }

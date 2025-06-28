@@ -13,7 +13,7 @@
   * @param msg: A string that discribes the error
   * @warning this function will exit the program
   */
-void error(char *msg){
-  fprintf(stderr, "ERROR: %s.\nFound on line %i at charater %i\n", msg, curLine, curChar);
+void parseError(char *msg){
+  fprintf(stderr," Parse error: %s.\nFound on %i:%i\n", msg, curLine, curChar);
   exit(1);
 }

@@ -11,6 +11,6 @@
 #include <stdio.h>
 
 /* Prints out a given error message then exits the program */
-extern void error(char *msg);
+extern void parseError(char *msg);
 
 #endif /*!__error_h__*/
