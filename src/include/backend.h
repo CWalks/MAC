@@ -10,6 +10,10 @@
 #include <stdio.h>
 #include "parser.h"
 
-extern void stackMachineCodeGen(AST_node *);
+#define ERROR 1
+#define SUCCESS 0
+
+extern int stackMachineCodeGen(AST_node *);
+extern int cCodeGen(AST_node *);
 
 #endif /* __BACKEND_H__*/

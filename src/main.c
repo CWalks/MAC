@@ -4,10 +4,10 @@
  * Main 
  */
   
-#include "error.h"
 #include "parser.h"
 #include "backend.h"
 
+/*For getopt_long*/
 #include <getopt.h>
 
 
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]){
   int numOfFlags = 0; /*keep track of how many vaild flags are passed*/
 
   static struct option longOptions[] = {
-    {"C-gen", no_argument, 0, 'c' },
+    {"c-gen", no_argument, 0, 'c' },
     {"stack-gen", no_argument, 0, 's'},
     {"interpreter", no_argument, 0, 'i'},
     {0, 0, 0, 0}
@@ -70,16 +70,19 @@ int main(int argc, char *argv[]){
   AST_node *icode;
   if(!parseProgram(&icode, fptr)){
     fprintf(stderr, "Error: No valid expression found at the start of your input.\n");
-    fclose(fptr);
     return EXIT_FAILURE;
   }
   fclose(fptr);
 
   /*Code gen*/
   if(mode == 1){
-    printf("Code gen\n");
+    if(cCodeGen(icode) == EXIT_FAILURE){
+      return EXIT_FAILURE;
+    };
   }else if(mode == 2){
-    stackMachineCodeGen(icode);
+    if(stackMachineCodeGen(icode) == EXIT_FAILURE){
+      return EXIT_FAILURE;
+    };
   }else{
     printf("interpreter\n");
   }

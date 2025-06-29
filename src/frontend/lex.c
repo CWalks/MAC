@@ -9,7 +9,7 @@
 
 /* Global variables that will help with error handling */
 int curLine = 1;
-int curChar = 0;
+int curChar = 1;
 
 /* Global variable that will hold the current token that the lexical 
  * analyzer is focusing on 
@@ -27,7 +27,8 @@ static int layoutChar (int ch){
       curLine++; /* Incerment curLine & reset curChar */
       curChar = 0;
       return 1;
-    case ' ': case '\t': return 1; /* ch is whitespace */
+    case ' ':
+    case '\t': return 1; /* ch is whitespace */
     default: return 0;
   }
 }
@@ -69,10 +70,7 @@ void getNextToken(FILE *fp){
     }
   }while(layoutChar(ch));
   
-  /* Update curChar */
-  curChar++;
-
-  /*Now classify it*/
+  /*Now cla:ssify it*/
   if(isDigit(ch)){
     int value = 0;
     while(isDigit(ch)){

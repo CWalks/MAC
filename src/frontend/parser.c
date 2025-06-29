@@ -80,17 +80,21 @@ static int parseExpression(Expression **expr_p, FILE *fp){
     getNextToken(fp);
     if(!parseExpression(&expr->left, fp)){
       /*error missing expression*/
+      fclose(fp);
       parseError("Missing expression; You are missing the left expression within your brackets");
     }
     if(!parseOperator(&expr->oper, fp)){
+       fclose(fp);
       /*error missing operator*/
       parseError("Missing operator; You are missing an operator within your brackets");
     }
     if(!parseExpression(&expr->right, fp)){
+       fclose(fp);
       /*Error missing expression*/
       parseError("Missing expression; You are missing the right expression within your brackets");
     }
     if(Token.class != ')'){
+       fclose(fp);
       /*error missing bracket )*/
       parseError("Missing end bracket; remember to match your brackets! ");
     }
@@ -100,6 +104,7 @@ static int parseExpression(Expression **expr_p, FILE *fp){
   }
   /*Failed on both attemps*/
   freeExpression(expr);
+  fclose(fp);
   return FAILURE;
 }
 
@@ -119,6 +124,7 @@ int parseProgram(AST_node **icode_p, FILE *fp){
 
   /*Check fp*/
   if (!fp) {
+        fclose(fp);
         parseError("parse: NULL file pointer\n"); 
     }
 
@@ -129,6 +135,7 @@ int parseProgram(AST_node **icode_p, FILE *fp){
   if(parseExpression(&expr, fp)){
     /*After parsing, if there isnt an EOF at the end, the program does not end with ')'*/
     if(Token.class != EOF){
+        fclose(fp);
      
       switch (Token.class) {
         case '*':
