@@ -23,7 +23,8 @@ all : mac
 .PHONY: all clean
 
 #object files that will be made
-OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/lex.o $(BUILD_DIR)/error.o $(BUILD_DIR)/parser.o $(BUILD_DIR)/stackBackend.o $(BUILD_DIR)/cBackend.o 
+OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/lex.o $(BUILD_DIR)/error.o $(BUILD_DIR)/parser.o \
+			 $(BUILD_DIR)/stackBackend.o $(BUILD_DIR)/cBackend.o $(BUILD_DIR)/interpBackend.o
 
 clean:
 	rm -fr mac $(BUILD_DIR) $(LIB_DIR) $(BIN_DIR)
