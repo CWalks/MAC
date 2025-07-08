@@ -143,6 +143,7 @@ int parseProgram(AST_node **icode_p, FILE *fp){
           break; /*Not needed because error exits the program but this stops from compiler complaining*/
         case '+':
           parseError("Expressions must be wrapped in parentheses");
+          break;
         case DIGIT:
           parseError("Space between digits");
           break;

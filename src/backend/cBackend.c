@@ -31,7 +31,7 @@ static int processForCGen(Expression *expr){
     printf("int temp%d = %d; \n", var, expr->value);
     return var;
   }
-  /*If both children are digits, this must be a operator*/
+  /*If both children are digits, this must be a an operator*/
   if(expr->left->type == 'D' && expr->right->type == 'D'){
     int var = tempVarName();
     printf("int temp%d = %d %c %d; \n", var, expr->left->value, expr->oper ,expr->right->value);

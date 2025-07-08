@@ -15,5 +15,6 @@
 
 extern int stackMachineCodeGen(AST_node *);
 extern int cCodeGen(AST_node *);
+extern int interpreter(AST_node *);
 
 #endif /* __BACKEND_H__*/

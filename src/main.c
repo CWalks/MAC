@@ -10,8 +10,6 @@
 /*For getopt_long*/
 #include <getopt.h>
 
-
-
 int main(int argc, char *argv[]){
  
   /* If there are too many flags */
@@ -76,6 +74,7 @@ int main(int argc, char *argv[]){
 
   /*Code gen*/
   if(mode == 1){
+    /*Call the function, if there is error exit program, else the function will execute*/
     if(cCodeGen(icode) == EXIT_FAILURE){
       return EXIT_FAILURE;
     };
@@ -84,8 +83,10 @@ int main(int argc, char *argv[]){
       return EXIT_FAILURE;
     };
   }else{
-    printf("interpreter\n");
+    if(interpreter(icode) == EXIT_FAILURE){
+      return EXIT_FAILURE;
+    };
   }
 
-  return 0;
+  return SUCCESS;
 }
