@@ -35,12 +35,12 @@ static int processAndInterpret(Expression *expr){
  * @param icode: an AST_node (EXpression struct) that will be the head of the AST
  * @note: this function will print out the result of the AST 
  */
-int interpreter(AST_node *icode){
+int interpreter(AST_node *icode, FILE *fptr){
   if(icode == NULL){
     fprintf(stderr,"./mac: Error: invaild AST node");
     return ERROR;
   }
   int result = processAndInterpret(icode);
-  printf("%d\n",result);
+  fprintf(fptr, "%d\n",result);
   return SUCCESS;
 }

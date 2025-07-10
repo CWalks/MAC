@@ -13,8 +13,8 @@
 #define ERROR 1
 #define SUCCESS 0
 
-extern int stackMachineCodeGen(AST_node *);
-extern int cCodeGen(AST_node *);
-extern int interpreter(AST_node *);
+extern int stackMachineCodeGen(AST_node *, FILE *);
+extern int cCodeGen(AST_node *, FILE *);
+extern int interpreter(AST_node *, FILE *);
 
 #endif /* __BACKEND_H__*/

@@ -23,23 +23,23 @@ static int tempVarName(){
  * @note: This function will recursively go through the AST checking each node and will
  * print out the instruction of how to solve the expression
  */  
-static int processForCGen(Expression *expr){
+static int processForCGen(Expression *expr,FILE *fptr){
    
   /*If at a leaf node*/
   if(expr->type == 'D'){
     int var = tempVarName();
-    printf("int temp%d = %d; \n", var, expr->value);
+    fprintf(fptr,"\tint temp%d = %d; \n", var, expr->value);
     return var;
   }
   /*If both children are digits, this must be a an operator*/
   if(expr->left->type == 'D' && expr->right->type == 'D'){
     int var = tempVarName();
-    printf("int temp%d = %d %c %d; \n", var, expr->left->value, expr->oper ,expr->right->value);
+    fprintf(fptr,"\tint temp%d = %d %c %d; \n", var, expr->left->value, expr->oper ,expr->right->value);
     return var;
   }
 
-  int left = processForCGen(expr->left);
-  int right = processForCGen(expr->right);
+  int left = processForCGen(expr->left,fptr);
+  int right = processForCGen(expr->right,fptr);
   int result = tempVarName();
 
   char oper;
@@ -48,7 +48,7 @@ static int processForCGen(Expression *expr){
     case '*': oper = '*'; break;
   }
 
-  printf("int temp%d = temp%d %c temp%d;\n",result, left, oper, right);
+  fprintf(fptr, "\tint temp%d = temp%d %c temp%d;\n",result, left, oper, right);
   return result;
 
 }
@@ -58,14 +58,14 @@ static int processForCGen(Expression *expr){
  * and generate C code
  * @param icode: and AST_node (Expression) that will the be head of the AST
  */
-int cCodeGen(AST_node *icode){
+int cCodeGen(AST_node *icode, FILE *fptr){
   if(icode == NULL){
     fprintf(stderr,"./mac: Error: invaild AST node");
     return ERROR;
   }
-  printf("#include<stdio.h>\n\nint main(void){\n");
-  int result = processForCGen(icode);
-  printf("printf(\"%%d\\n\", temp%d);\n}\n", result);
+  fprintf(fptr,"#include<stdio.h>\n\nvoid main(){\n");
+  int result = processForCGen(icode, fptr);
+  fprintf(fptr,"\tprintf(\"%%d\\n\", temp%d);\n}\n", result);
 
   return SUCCESS;
 }

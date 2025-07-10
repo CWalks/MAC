@@ -12,12 +12,15 @@
 
 int main(int argc, char *argv[]){
  
-  /* If there are too many flags */
-  if(argc > 3 || argc < 2){
-    fprintf(stderr, "Usage: %s [-c | -s | -i]  <filename>\n", argv[0]);
+  /* If there are too many or not enough flags*/
+  if(argc == 1){
+    fprintf(stderr, "Usage: %s [-c | -s | -i]  <source file> <destination file>\n", argv[0]);
+    return EXIT_FAILURE;
+  }else if (argc != 4){
+    fprintf(stderr, "Improper use of flags\nUsage: %s [-c | -s | -i]  <filename> <destination file>\n", argv[0]);
     return EXIT_FAILURE;
   }
-  
+
   /*Flag parse*/
   int opt;
   int mode = 0; /*1 = C-gen, 2 = stakc-gen, 3 = interpreter*/
@@ -49,44 +52,55 @@ int main(int argc, char *argv[]){
     }
   }
 
-  /*Make sure only one vail flag is given*/
+  /*Make sure only one vaild flag is given*/
   if(numOfFlags > 1){
     fprintf(stderr, "Too many flags passed\nUsage: %s [-c | -s | -i]  <filename>\n", argv[0]);
     return EXIT_FAILURE;
   }  
 
   /* Open the file */
-  FILE *fptr;
-  fptr = fopen(argv[optind], "r");
-  if (!fptr) {
-    perror("./mac: Failed to open File");
-    
+  FILE *sourcefptr;
+  sourcefptr = fopen(argv[optind], "r");
+  if (!sourcefptr) {
+    perror("./mac: Failed to open source file");
+    return EXIT_FAILURE; ;
+  }
+
+  /*Create destination files*/
+  FILE *destinationfptr;
+  destinationfptr = fopen(argv[++optind], "w");
+  if (!sourcefptr) {
+    perror("./mac: Failed to open destination file");
     return EXIT_FAILURE; ;
   }
 
   /*Make the AST*/
   AST_node *icode;
-  if(!parseProgram(&icode, fptr)){
+  if(!parseProgram(&icode, sourcefptr)){
     fprintf(stderr, "Error: No valid expression found at the start of your input.\n");
+    fclose(sourcefptr);
     return EXIT_FAILURE;
   }
-  fclose(fptr);
+  fclose(sourcefptr);
 
   /*Code gen*/
   if(mode == 1){
     /*Call the function, if there is error exit program, else the function will execute*/
-    if(cCodeGen(icode) == EXIT_FAILURE){
+    if(cCodeGen(icode, destinationfptr) == EXIT_FAILURE){
       return EXIT_FAILURE;
     };
   }else if(mode == 2){
-    if(stackMachineCodeGen(icode) == EXIT_FAILURE){
+    if(stackMachineCodeGen(icode, destinationfptr) == EXIT_FAILURE){
       return EXIT_FAILURE;
     };
   }else{
-    if(interpreter(icode) == EXIT_FAILURE){
+    if(interpreter(icode,  destinationfptr) == EXIT_FAILURE){
       return EXIT_FAILURE;
     };
   }
+
+  
+  fclose(destinationfptr);
 
   return SUCCESS;
 }
