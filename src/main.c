@@ -10,14 +10,17 @@
 /*For getopt_long*/
 #include <getopt.h>
 
+/*For strcmp*/
+#include <string.h>
+
 int main(int argc, char *argv[]){
  
   /* If there are too many or not enough flags*/
   if(argc == 1){
     fprintf(stderr, "Usage: %s [-c | -s | -i]  <source file> <destination file>\n", argv[0]);
     return EXIT_FAILURE;
-  }else if (argc != 4){
-    fprintf(stderr, "Improper use of flags\nUsage: %s [-c | -s | -i]  <filename> <destination file>\n", argv[0]);
+  }else if (argc > 5){
+    fprintf(stderr, "Improper use of flags\nUsage: %s [-c | -s | -i]  <source file> <destination file>\n", argv[0]);
     return EXIT_FAILURE;
   }
 
@@ -25,15 +28,17 @@ int main(int argc, char *argv[]){
   int opt;
   int mode = 0; /*1 = C-gen, 2 = stakc-gen, 3 = interpreter*/
   int numOfFlags = 0; /*keep track of how many vaild flags are passed*/
+  int dry = 0; /*Will this be a dry run?*/
 
   static struct option longOptions[] = {
     {"c-gen", no_argument, 0, 'c' },
     {"stack-gen", no_argument, 0, 's'},
     {"interpreter", no_argument, 0, 'i'},
+    {"dry", no_argument, 0, 'd'},
     {0, 0, 0, 0}
     };
 
-    while ((opt = getopt_long (argc, argv, "csi", longOptions, NULL)) != -1){
+    while ((opt = getopt_long (argc, argv, "csid", longOptions, NULL)) != -1){
       switch(opt){
         case 'c':
           mode = 1;
@@ -47,6 +52,9 @@ int main(int argc, char *argv[]){
           mode = 3;
           ++numOfFlags;
           break;
+      case 'd':
+        dry = 1;
+        break;
       default: /*unknown flag*/
         return EXIT_FAILURE;
     }
@@ -68,10 +76,14 @@ int main(int argc, char *argv[]){
 
   /*Create destination files*/
   FILE *destinationfptr;
-  destinationfptr = fopen(argv[++optind], "w");
-  if (!sourcefptr) {
+  if (dry == 1 ){
+    destinationfptr = stdout; 
+  }else {
+    destinationfptr = fopen(argv[++optind], "w");
+    if (!sourcefptr) {
     perror("./mac: Failed to open destination file");
-    return EXIT_FAILURE; ;
+    return EXIT_FAILURE;
+    }
   }
 
   /*Make the AST*/
