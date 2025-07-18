@@ -5,8 +5,6 @@
  */
 
 #include "error.h"
-/*Needed for curChar & curLine*/
-#include "lex.h"  
 
 /**
   * @breif: prints out a given message to standard error then exits the program
@@ -14,6 +12,6 @@
   * @warning this function will exit the program
   */
 void parseError(char *msg){
-  fprintf(stderr," Parse error: %s.\nFound on %i:%i\n", msg, curLine, curChar);
+  fprintf(stderr,"Parse error: %s.\n", msg);
   exit(1);
 }

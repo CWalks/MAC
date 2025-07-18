@@ -14,13 +14,14 @@
 #include <string.h>
 
 int main(int argc, char *argv[]){
- 
+
   /* If there are too many or not enough flags*/
   if(argc == 1){
     fprintf(stderr, "Usage: %s [-c | -s | -i]  <source file> <destination file>\n", argv[0]);
     return EXIT_FAILURE;
-  }else if (argc > 5){
-    fprintf(stderr, "Improper use of flags\nUsage: %s [-c | -s | -i]  <source file> <destination file>\n", argv[0]);
+
+  }else if (argc < 4 || argc > 5){
+    fprintf(stderr, "Improper use of flags\nUsage: %s [-c | -s | -i]  <source file> [<destination file> | -d]\nRead SYNTAX.md for vaild options\n", argv[0]);
     return EXIT_FAILURE;
   }
 
@@ -70,7 +71,7 @@ int main(int argc, char *argv[]){
   FILE *sourcefptr;
   sourcefptr = fopen(argv[optind], "r");
   if (!sourcefptr) {
-    perror("./mac: Failed to open source file");
+    fprintf(stderr,"./mac: Failed to open source file\n");
     return EXIT_FAILURE; ;
   }
 
@@ -81,7 +82,7 @@ int main(int argc, char *argv[]){
   }else {
     destinationfptr = fopen(argv[++optind], "w");
     if (!sourcefptr) {
-    perror("./mac: Failed to open destination file");
+    fprintf(stderr,"./mac: Failed to open destination file\n");
     return EXIT_FAILURE;
     }
   }
@@ -89,8 +90,7 @@ int main(int argc, char *argv[]){
   /*Make the AST*/
   AST_node *icode;
   if(!parseProgram(&icode, sourcefptr)){
-    fprintf(stderr, "Error: No valid expression found at the start of your input.\n");
-    fclose(sourcefptr);
+    fprintf(stderr, "./mac: No valid expression found at the start of the input.\n");
     return EXIT_FAILURE;
   }
   fclose(sourcefptr);

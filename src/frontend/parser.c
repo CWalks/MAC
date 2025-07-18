@@ -50,6 +50,7 @@ static int parseOperator(Operator *oper, FILE *fp){
 /**
  * @brief Builds an AST from a given Expression
  * @param expr_P: a double pointer to a expression that will start as the root of the AST
+ * @param fp: a file pointer that will be read from
  * @Return: 1 if successful otherwise return 0 
  *
  * @note If an error is found it will stop the program and broadcast
@@ -81,22 +82,22 @@ static int parseExpression(Expression **expr_p, FILE *fp){
     if(!parseExpression(&expr->left, fp)){
       /*error missing expression*/
       fclose(fp);
-      parseError("Missing expression; You are missing the left expression within your brackets");
+      parseError("Missing expression; Missing the left expression within your brackets");
     }
     if(!parseOperator(&expr->oper, fp)){
        fclose(fp);
       /*error missing operator*/
-      parseError("Missing operator; You are missing an operator within your brackets");
+      parseError("Missing operator; Missing an operator within your brackets");
     }
     if(!parseExpression(&expr->right, fp)){
        fclose(fp);
       /*Error missing expression*/
-      parseError("Missing expression; You are missing the right expression within your brackets");
+      parseError("Missing expression; Missing the right expression within your brackets");
     }
     if(Token.class != ')'){
        fclose(fp);
       /*error missing bracket )*/
-      parseError("Missing end bracket; remember to match your brackets! ");
+      parseError("Missing end bracket; Remember to match your brackets! ");
     }
     getNextToken(fp);
     return SUCCESS;
@@ -104,7 +105,6 @@ static int parseExpression(Expression **expr_p, FILE *fp){
   }
   /*Failed on both attemps*/
   freeExpression(expr);
-  fclose(fp);
   return FAILURE;
 }
 
@@ -148,7 +148,9 @@ int parseProgram(AST_node **icode_p, FILE *fp){
           parseError("Space between digits");
           break;
     
-        default : parseError("Garbage after end of program");
+        default:
+          parseError("Garbage after end of program");
+          break;
 
       }
     }
