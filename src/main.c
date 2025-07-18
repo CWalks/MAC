@@ -63,7 +63,7 @@ int main(int argc, char *argv[]){
 
   /*Make sure only one vaild flag is given*/
   if(numOfFlags > 1){
-    fprintf(stderr, "Too many flags passed\nUsage: %s [-c | -s | -i]  <filename>\n", argv[0]);
+    fprintf(stderr, "Too many flags passed\nUsage: %s [-c | -s | -i]  <source file> [<destination file> | -d]\nRead SYNTAX.md for vaild options\n", argv[0]);
     return EXIT_FAILURE;
   }  
 

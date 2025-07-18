@@ -82,22 +82,22 @@ static int parseExpression(Expression **expr_p, FILE *fp){
     if(!parseExpression(&expr->left, fp)){
       /*error missing expression*/
       fclose(fp);
-      parseError("Missing expression; Missing the left expression within your brackets");
+      parseError("Missing expression\nMissing the left expression within your brackets");
     }
     if(!parseOperator(&expr->oper, fp)){
        fclose(fp);
       /*error missing operator*/
-      parseError("Missing operator; Missing an operator within your brackets");
+      parseError("Missing operator\nMissing an operator within your brackets");
     }
     if(!parseExpression(&expr->right, fp)){
        fclose(fp);
       /*Error missing expression*/
-      parseError("Missing expression; Missing the right expression within your brackets");
+      parseError("Missing expression\nMissing the right expression within your brackets");
     }
     if(Token.class != ')'){
        fclose(fp);
       /*error missing bracket )*/
-      parseError("Missing end bracket; Remember to match your brackets! ");
+      parseError("Missing end bracket\nRemember to match your brackets! ");
     }
     getNextToken(fp);
     return SUCCESS;

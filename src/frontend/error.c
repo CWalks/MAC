@@ -12,6 +12,6 @@
   * @warning this function will exit the program
   */
 void parseError(char *msg){
-  fprintf(stderr,"Parse error: %s.\n", msg);
+  fprintf(stderr,"./mac: Parse error; %s.\n", msg);
   exit(1);
 }
