@@ -9,17 +9,23 @@ which will be explained later.
 
 ## .arth files
 .arth files supports:
+
 - bracketed arithmetic expressions
-//- variables or assignments (This will also change in the future)
+
+- variables or assignments (This will also change in the future)
 
 ### Grammar for bracketed arithmetic expressions
-digit -> '[0-9]+'
+digit -> `[0-9]+`
+
 operator   → '+' | '*' 
+
 expression → digit | '(' expression operator expression ')'
 
 ### Examples
 `( (4 * 59  ) + (09  * 0))`
+
 `(9 + 242)`
+
 `8`
 
 #### Example of an .arth file
@@ -30,7 +36,9 @@ expression → digit | '(' expression operator expression ')'
 
 ### Quick Guide
 -s : stack Machine generation
+
 -c : C generation
+
 -i : interpreter (default)
 
 `./mac [-c | -s | -i]  <source file> [<destination file> | -d]`
@@ -59,8 +67,9 @@ is the defeat mode for MAC.
 ### Dry flag
 There is a dry flag that will print out the results to stdout rather to a destination file.
 This flag, -d, is used along side one of the three modes for mac (-s, -c, -i).
-#### Example
-`./mac -c -d <source file>`
+  
+  #### Example
+  `./mac -c -d <source file>`
 
 
 
