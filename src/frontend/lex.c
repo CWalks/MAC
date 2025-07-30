@@ -9,7 +9,7 @@
 
 /* Global variables that will help with error handling */
 int curLine = 1;
-int curChar = 1;
+int curColumn = 0;
 
 /* Global variable that will hold the current token that the lexical 
  * analyzer is focusing on 
@@ -24,8 +24,8 @@ TokenType Token;
 static int layoutChar (int ch){
   switch (ch){
     case '\n':
-      curLine++; /* Incerment curLine & reset curChar */
-      curChar = 0;
+      curLine++; /* Incerment curLine & reset curColumn */
+      curColumn = 0;
       return 1;
     case ' ':
     case '\t': return 1; /* ch is whitespace */
@@ -62,7 +62,7 @@ void getNextToken(FILE *fp){
   /*Get next non-layout character*/
   do{
     ch = fgetc(fp);
-
+    curColumn++;
     if (ch < 0){
       Token.class = EOF; 
       Token.repr = '#';
@@ -76,8 +76,10 @@ void getNextToken(FILE *fp){
     while(isDigit(ch)){
       value = (value * 10) + (ch - '0'); /*This builds the number allowing multi digit numbers*/
       ch = fgetc(fp);
+      curColumn++;
     }
     ungetc(ch, fp);  /*put the non-digit back for future processing*/
+    curColumn--;
     Token.class = DIGIT;
     Token.repr = value;
   
@@ -94,6 +96,6 @@ int getCurLine(void){
 }
 
 /*Returns the current character number*/
-int getCurChar(void){
-  return curChar;
+int getCurColumn(void){
+  return curColumn;
 }

@@ -82,22 +82,22 @@ static int parseExpression(Expression **expr_p, FILE *fp){
     if(!parseExpression(&expr->left, fp)){
       /*error missing expression*/
       fclose(fp);
-      parseError("Missing expression\nMissing the left expression within your brackets");
+      parseError("Missing the left expression within your brackets");
     }
     if(!parseOperator(&expr->oper, fp)){
        fclose(fp);
       /*error missing operator*/
-      parseError("Missing operator\nMissing an operator within your brackets");
+      parseError("Missing operator");
     }
     if(!parseExpression(&expr->right, fp)){
        fclose(fp);
       /*Error missing expression*/
-      parseError("Missing expression\nMissing the right expression within your brackets");
+      parseError("Missing the right expression within your brackets");
     }
     if(Token.class != ')'){
        fclose(fp);
       /*error missing bracket )*/
-      parseError("Missing end bracket\nRemember to match your brackets! ");
+      parseError("Missing end bracket");
     }
     getNextToken(fp);
     return SUCCESS;
@@ -133,10 +133,9 @@ int parseProgram(AST_node **icode_p, FILE *fp){
   /*Start the lexical analyzer*/
   getNextToken(fp);
   if(parseExpression(&expr, fp)){
-    /*After parsing, if there isnt an EOF at the end, the program does not end with ')'*/
+    /*After parsing, if there isnt an EOF at the end, something is wrong*/
     if(Token.class != EOF){
-        fclose(fp);
-     
+        fclose(fp);     
       switch (Token.class) {
         case '*':
           parseError("Expressions must be wrapped in parentheses");

@@ -26,7 +26,7 @@ extern int curLine;
 extern int curChar;
 
 extern int getCurLine(void);
-extern int getCurChar(void);
+extern int getCurColumn(void);
 
 /* Grabs the next non-layout token */
 extern void getNextToken(FILE *fp);
