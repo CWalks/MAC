@@ -17,7 +17,7 @@ int main(int argc, char *argv[]){
 
   /* If there are too many or not enough flags*/
   if(argc == 1){
-    fprintf(stderr, "Usage: %s [-c | -s | -i]  <source file> <destination file>\n", argv[0]);
+    fprintf(stderr, "Usage: %s [-c | -s | -i]  <source file> [<destination file> | -d]\n", argv[0]);
     return EXIT_FAILURE;
 
   }else if (argc < 4 || argc > 5){
