@@ -27,17 +27,18 @@ static int processForCGen(Expression *expr,FILE *fptr){
    
   /*If at a leaf node*/
   if(expr->type == 'D'){
-    int var = tempVarName();
-    fprintf(fptr,"\tint temp%d = %d; \n", var, expr->value);
-    return var;
+    int varName = tempVarName();
+    fprintf(fptr,"\tint temp%d = %d; \n", varName, expr->value);
+    return varName;
   }
   /*If both children are digits, this must be a an operator*/
   if(expr->left->type == 'D' && expr->right->type == 'D'){
-    int var = tempVarName();
-    fprintf(fptr,"\tint temp%d = %d %c %d; \n", var, expr->left->value, expr->oper ,expr->right->value);
-    return var;
+    int varName = tempVarName();
+    fprintf(fptr,"\tint temp%d = %d %c %d; \n", varName, expr->left->value, expr->oper ,expr->right->value);
+    return varName;
   }
 
+  /*Now go through the left and right children*/
   int left = processForCGen(expr->left,fptr);
   int right = processForCGen(expr->right,fptr);
   int result = tempVarName();
