@@ -15,16 +15,6 @@
 
 int main(int argc, char *argv[]){
 
-  /* If there are too many or not enough flags*/
-  if(argc == 1){
-    fprintf(stderr, "Usage: %s [-c | -s | -i]  <source file> [<destination file> | -d]\n", argv[0]);
-    return EXIT_FAILURE;
-
-  }else if (argc < 4 || argc > 5){
-    fprintf(stderr, "Improper use of flags\nUsage: %s [-c | -s | -i]  <source file> [<destination file> | -d]\nRead SYNTAX.md for vaild options\n", argv[0]);
-    return EXIT_FAILURE;
-  }
-
   /*Flag parse*/
   int opt;
   int mode = 0; /*1 = C-gen, 2 = stakc-gen, 3 = interpreter*/
@@ -65,7 +55,19 @@ int main(int argc, char *argv[]){
   if(numOfFlags > 1){
     fprintf(stderr, "Too many flags passed\nUsage: %s [-c | -s | -i]  <source file> [<destination file> | -d]\nRead SYNTAX.md for vaild options\n", argv[0]);
     return EXIT_FAILURE;
-  }  
+  } 
+
+/* If there are too many or not enough flags*/
+  if(argc == 1){
+    fprintf(stderr, "Usage: %s [-c | -s | -i]  <source file> [<destination file> | -d]\n", argv[0]);
+    return EXIT_FAILURE;
+  }else if(dry == 1 && (argc < 3 || argc > 4)){
+  fprintf(stderr, "Improper use of flags\nUsage: %s [-c | -s | -i]  <source file> [<destination file> | -d]\nRead SYNTAX.md for vaild options\n", argv[0]);
+    return EXIT_FAILURE;
+  }else if (dry == 0 && (argc < 4 || argc > 5)){
+    fprintf(stderr, "Improper use of flags\nUsage: %s [-c | -s | -i]  <source file> [<destination file> | -d]\nRead SYNTAX.md for vaild options\n", argv[0]);
+    return EXIT_FAILURE;
+  }
 
   /* Open the file */
   FILE *sourcefptr;
