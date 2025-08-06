@@ -1,0 +1,33 @@
+TODO
+- add error into makefile : done
+- test error : done
+- test pasrer : done
+- write syntax.md : done
+- turn docs into C style docs (add @brief ect) : done
+- organize files into folders (make front end lib and folders for front end, back end, docs, build) : sorta done
+- Allow multi-digit numbers -done
+- fugure out how to pull main to parser branch : done
+- - back and front end folders; done:
+- Stack machine code gene ; done  
+- better errors (deal with floats, and find other way to make error better.): done
+- rename error to parserError and make sure you close file before exiting : done
+- allow mac to read files (update SYNTAX) : done
+- back end C and interp : done
+- write to file: done
+- add dry flag : done
+- change perror to fprintf : done
+- update SYNTAX : done
+- add back accurate row : column : done
+
+- fix flag passing (number of flags needed)
+
+- make better testing
+
+- add comments
+
+- vars
+
+- add more operators ( - / )
+
+
+
