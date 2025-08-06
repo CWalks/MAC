@@ -10,16 +10,14 @@ which will be explained later.
 ## .arth files
 .arth files supports:
 
-- bracketed arithmetic expressions
-
-- variables or assignments (This will also change in the future)
+- bracketed arithmetic expressions with addition and multiplication
 
 ### Grammar for bracketed arithmetic expressions
 digit -> `[0-9]+`
 
-operator   → '+' | '*' 
+operator  -> '+' | '*' 
 
-expression → digit | '(' expression operator expression ')'
+expression -> digit | '(' expression operator expression ')'
 
 ### Examples
 `( (4 * 59  ) + (09  * 0))`
@@ -39,7 +37,7 @@ expression → digit | '(' expression operator expression ')'
 
 -c : C generation
 
--i : interpreter (default)
+-i : interpreter (
 
 `./mac [-c | -s | -i]  <source file> [<destination file> | -d]`
 
@@ -49,7 +47,7 @@ expression → digit | '(' expression operator expression ')'
 This code generation will output code for an abstract stack machine and is used with the -s 
 flag.
 
-#### How does this abstract stack machine work?
+How does this abstract stack machine work?
 It will push numbers onto the abstract stack.
 When it does an operation (ADD or MULT) it takes the 
 top two number then preforms the operation on them. That 
